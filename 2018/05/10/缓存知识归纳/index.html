@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HTTP缓存机制 当一个用户发起一个静态资源请求的时候，浏览器会通过以下几步来获取资源：  200 from memory cache不访问服务器，直接读缓存，从内存中读取缓存,此时的数据时缓存到内存中的，当页面被关闭以后，数据将不存在。 200 from disk cache不访问服务器，直接读缓存，从磁盘中读取缓存，当页面或浏览器关闭后，数据还是存在。 304 (Not Modified)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存知识归纳">
+<meta property="og:url" content="http://yoursite.com/2018/05/10/缓存知识归纳/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="HTTP缓存机制 当一个用户发起一个静态资源请求的时候，浏览器会通过以下几步来获取资源：  200 from memory cache不访问服务器，直接读缓存，从内存中读取缓存,此时的数据时缓存到内存中的，当页面被关闭以后，数据将不存在。 200 from disk cache不访问服务器，直接读缓存，从磁盘中读取缓存，当页面或浏览器关闭后，数据还是存在。 304 (Not Modified)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/05/10/缓存知识归纳/1.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/10/缓存知识归纳/3.png">
+<meta property="og:image" content="http://yoursite.com/2018/05/10/缓存知识归纳/2.png">
+<meta property="og:updated_time" content="2018-05-10T13:20:43.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="缓存知识归纳">
+<meta name="twitter:description" content="HTTP缓存机制 当一个用户发起一个静态资源请求的时候，浏览器会通过以下几步来获取资源：  200 from memory cache不访问服务器，直接读缓存，从内存中读取缓存,此时的数据时缓存到内存中的，当页面被关闭以后，数据将不存在。 200 from disk cache不访问服务器，直接读缓存，从磁盘中读取缓存，当页面或浏览器关闭后，数据还是存在。 304 (Not Modified)">
+<meta name="twitter:image" content="http://yoursite.com/2018/05/10/缓存知识归纳/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/10/缓存知识归纳/"/>
+
+
+
+
+
+  <title>缓存知识归纳 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/10/缓存知识归纳/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tangchao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">缓存知识归纳</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-10T19:16:12+08:00">
+                2018-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/2018/05/10/缓存知识归纳/1.png" alt=""></p>
+<h2 id="HTTP缓存机制"><a href="#HTTP缓存机制" class="headerlink" title="HTTP缓存机制"></a>HTTP缓存机制</h2><blockquote>
+<p>当一个用户发起一个静态资源请求的时候，浏览器会通过以下几步来获取资源：</p>
+<ol>
+<li><code>200 from memory cache</code><br>不访问服务器，直接读缓存，从<code>内存</code>中读取缓存,此时的数据时缓存到内存中的，当<code>页面</code>被关闭以后，数据将不存在。</li>
+<li><code>200 from disk cache</code><br>不访问服务器，直接读缓存，从<code>磁盘</code>中读取缓存，当页面或浏览器关闭后，数据还是存在。</li>
+<li><code>304 (Not Modified)</code></li>
+</ol>
+<ul>
+<li>缓存过期，但<code>Last-Modified</code>、<code>Etag</code>验证资源有效，服务器返回<code>304</code></li>
+<li>缓存需要强制验证，确定资源有效后，服务器返回<code>304</code>，如：Cache-Control：no-cach（这个设置规定缓存前必须先确定有效性）</li>
+</ul>
+</blockquote>
+<p><img src="/2018/05/10/缓存知识归纳/3.png" alt=""></p>
+<blockquote>
+<p>具体描述：</p>
+<ol>
+<li><code>本地缓存</code>阶段：先在本地查找该资源，如果有发现该资源，而且该资源还没有过期，就使用这一个资源，完全不会发送http请求到服务器；</li>
+<li><code>协商缓存</code>阶段：如果在本地缓存找到对应的资源，但是不知道该资源是否过期或者已经过期，则发一个http请求到服务器,然后服务器判断这个请求，如果请求的资源在服务器上没有改动过，则返回304，让浏览器使用本地找到的那个资源；</li>
+<li><code>缓存失败</code>阶段：当服务器发现请求的资源已经修改过，或者这是一个新的请求(在本地缓存中没有找到资源)，服务器则返回该资源的数据，并且返回200</li>
+</ol>
+</blockquote>
+<h3 id="协商缓存阶段"><a href="#协商缓存阶段" class="headerlink" title="协商缓存阶段"></a>协商缓存阶段</h3><h4 id="Last-Modified-amp-if-modified-since"><a href="#Last-Modified-amp-if-modified-since" class="headerlink" title="Last-Modified &amp; if-modified-since"></a>Last-Modified &amp; if-modified-since</h4><blockquote>
+<p><code>Last-Modified</code>与<code>If-Modified-Since</code>是一对报文头，属于<code>http 1.0</code>。<br><code>last-modified</code>是WEB服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间。</p>
+</blockquote>
+<h4 id="ETag-amp-If-None-Match"><a href="#ETag-amp-If-None-Match" class="headerlink" title="ETag &amp; If-None-Match"></a>ETag &amp; If-None-Match</h4><blockquote>
+<p><code>ETag</code>与<code>If-None-Match</code>是一对报文，属于<code>http 1.1</code>。<br><code>ETag</code>是一个文件的唯一标志符,就像一个哈希或者指纹，每个文件都有一个单独的标志，只要这个文件发生了改变，这个标志就会发生变化,如果请求资源的<code>ETag</code>与服务器的不一致，则表示该资源已经被修改过来，需要发最新的内容给浏览器。</p>
+</blockquote>
+<p><code>Etag</code>/<code>lastModified</code>过程如下：</p>
+<ol>
+<li>客户端请求一个页面（A）。</li>
+<li>服务器返回页面A，并在给A加上一个Last-Modified/ETag。</li>
+<li>客户端展现该页面，并将页面连同Last-Modified/ETag一起缓存。</li>
+<li>客户再次请求页面A，并将上次请求时服务器返回的Last-Modified/ETag一起传递给服务器。</li>
+<li>服务器检查该Last-Modified或ETag，并判断出该页面自上次客户端请求之后还未被修改，直接返回响应304和一个空的响应体。</li>
+</ol>
+<blockquote>
+<p>注意：通过<code>If-Modified-Since</code>和<code>If-Match</code>判断资源是否修改，如未修改则返回304，发生了一次请求，但请求内容长度为0，节省了带宽，如果有多台负载均衡的服务器，不同服务器计算出的Etag可能不同，这样就会造成资源的重复加载。</p>
+</blockquote>
+<p><code>Etag</code>主要为了解决<code>Last-Modified</code>无法解决的一些问题：</p>
+<ol>
+<li>一些文件如果改变后，又改回来了，<code>Last-Modified</code>会认为文件修改过，但其实它是没有变化的，<code>Etag</code>就不会判定它变化了</li>
+<li><code>If-Modified-Since</code>能检查到文件的变化是秒级别的，但如果一个文件1秒内变化了好几次，<code>If-Modified-Since</code>就检测不出来，这时需要<code>Etag</code>检测</li>
+<li>某些服务器不能精确的得到文件的最后修改时间</li>
+</ol>
+<h3 id="本地缓存阶段"><a href="#本地缓存阶段" class="headerlink" title="本地缓存阶段"></a>本地缓存阶段</h3><p><code>Expires</code>和<code>Cache-Control</code>是需要在服务器端配置的</p>
+<h4 id="Expires"><a href="#Expires" class="headerlink" title="Expires"></a>Expires</h4><blockquote>
+<p>指定缓存到期GMT的绝对时间，如果设了max-age，max-age就会覆盖expires。如果expires到期需要重新请求。</p>
+</blockquote>
+<h4 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h4><blockquote>
+<p>Cache-Control:这个是http 1.1中为了弥补 Expires 缺陷新加入的，下面是常用的值：</p>
+<ul>
+<li><code>no-cache</code>：强制浏览器在使用cache之前，先提交一个http请求到源服务器进行确认资源是否有效，防止从缓存中获取的是无效的资源。虽然http请求并未减少，但返回的是一个空的请求体，这样相当于减少了一个响应体。</li>
+<li><code>no-store</code>：<code>no-store</code>规定了浏览器不缓存任何缓存，而<code>no-cache</code>只是不缓存无效（这里是<code>无效</code>不是<code>过期</code>）的资源。<br>如下图：资源<code>Expires</code>已失效，也设置了<code>no-cach</code>,但浏览器还是缓存了过期的资源(<code>304</code>可以证明已缓存)，因为服务器判断了<code>If-Modified-Since</code>，资源是没有改动过的，所以返回了<code>304</code>。<br><img src="/2018/05/10/缓存知识归纳/2.png" alt=""></li>
+<li><code>max-age:</code>指定多少秒后缓存过期，如Cache-Control: max-age=3600, must-revalidate（3600秒后过期）</li>
+<li><code>must-revalidate</code>: 强制浏览器严格遵守你设置的cache规则。</li>
+<li><code>proxy-revalidate</code>: 强制proxy严格遵守你设置的cache规则。</li>
+</ul>
+</blockquote>
+<p>参考：</p>
+<ol>
+<li><a href="http://imweb.io/topic/55c6f9bac222e3af6ce235b9" target="_blank" rel="noopener">缓存策略</a></li>
+<li><a href="https://www.cnblogs.com/sustudy/p/4874490.html" target="_blank" rel="noopener">详解浏览器缓存机制与Apache设置缓存</a></li>
+<li><a href="https://segmentfault.com/a/1190000011286027" target="_blank" rel="noopener">由memoryCache和diskCache产生的浏览器缓存机制的思考</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/07/webpack使用指南/" rel="next" title="webpack使用指南">
+                <i class="fa fa-chevron-left"></i> webpack使用指南
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/29/各种安装/" rel="prev" title="各种安装">
+                各种安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">tangchao</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP缓存机制"><span class="nav-number">1.</span> <span class="nav-text">HTTP缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协商缓存阶段"><span class="nav-number">1.1.</span> <span class="nav-text">协商缓存阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Last-Modified-amp-if-modified-since"><span class="nav-number">1.1.1.</span> <span class="nav-text">Last-Modified &amp; if-modified-since</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ETag-amp-If-None-Match"><span class="nav-number">1.1.2.</span> <span class="nav-text">ETag &amp; If-None-Match</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地缓存阶段"><span class="nav-number">1.2.</span> <span class="nav-text">本地缓存阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Expires"><span class="nav-number">1.2.1.</span> <span class="nav-text">Expires</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cache-Control"><span class="nav-number">1.2.2.</span> <span class="nav-text">Cache-Control</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tangchao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
