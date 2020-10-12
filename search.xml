@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[算法好文章]]></title>
+    <url>%2F2020%2F10%2F12%2F%E7%AE%97%E6%B3%95%E5%A5%BD%E6%96%87%E7%AB%A0%2F</url>
+    <content type="text"><![CDATA[1.JavaScript 数据结构与算法之美 - 十大经典排序算法汇总2.前端动画演绎排序算法3.]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[pace.js原理解析]]></title>
+    <url>%2F2020%2F08%2F08%2Fpace-js%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90%2F</url>
+    <content type="text"><![CDATA[1.看源码先从init()入手2.init()后，执行了Pace.start()方法3.Pace.go performance.now]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[看了必懂的Promise源码分析]]></title>
+    <url>%2F2020%2F04%2F27%2F2020-04%2F%E7%9C%8B%E4%BA%86%E5%BF%85%E6%87%82%E7%9A%84Promise%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%2F</url>
+    <content type="text"><![CDATA[题目1.123456789const promise = new Promise((resolve, reject) =&gt; &#123; console.log(1) resolve() console.log(2)&#125;)promise.then(() =&gt; &#123; console.log(3)&#125;)console.log(4) 题目2.12345678910111213141516const promise1 = new Promise((resolve, reject) =&gt; &#123; setTimeout(() =&gt; &#123; resolve('success') &#125;, 1000)&#125;)const promise2 = promise1.then(() =&gt; &#123; throw new Error('error!!!')&#125;)console.log('promise1', promise1)console.log('promise2', promise2)setTimeout(() =&gt; &#123; console.log('promise1', promise1) console.log('promise2', promise2)&#125;, 2000) 题目3.12345678910111213const promise = new Promise((resolve, reject) =&gt; &#123; resolve('success1') reject('error') resolve('success2')&#125;)promise .then((res) =&gt; &#123; console.log('then: ', res) &#125;) .catch((err) =&gt; &#123; console.log('catch: ', err) &#125;) 题目4.1234567891011Promise.resolve(1) .then((res) =&gt; &#123; console.log(res) return 2 &#125;) .catch((err) =&gt; &#123; return 3 &#125;) .then((res) =&gt; &#123; console.log(res) &#125;) 题目5.1234567891011121314const promise = new Promise((resolve, reject) =&gt; &#123; setTimeout(() =&gt; &#123; console.log('once') resolve('success') &#125;, 1000)&#125;)const start = Date.now()promise.then((res) =&gt; &#123; console.log(res, Date.now() - start)&#125;)promise.then((res) =&gt; &#123; console.log(res, Date.now() - start)&#125;) 题目6.12345678910Promise.resolve() .then(() =&gt; &#123; return new Error('error!!!') &#125;) .then((res) =&gt; &#123; console.log('then: ', res) &#125;) .catch((err) =&gt; &#123; console.log('catch: ', err) &#125;) 题目7.12345const promise = Promise.resolve() .then(() =&gt; &#123; return promise &#125;)promise.catch(console.error) 题目8.1234Promise.resolve(1) .then(2) .then(Promise.resolve(3)) .then(console.log) 题目9.123456789Promise.resolve() .then(function success (res) &#123; throw new Error('error') &#125;, function fail1 (e) &#123; console.error('fail1: ', e) &#125;) .catch(function fail2 (e) &#123; console.error('fail2: ', e) &#125;)]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[babel精通1]]></title>
+    <url>%2F2019%2F11%2F26%2Fbabel%E7%B2%BE%E9%80%9A1%2F</url>
+    <content type="text"><![CDATA[babel的主要功能 转译语法 Polyfill浏览器不具备的features]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[babel6升级到7.x踩坑]]></title>
+    <url>%2F2019%2F11%2F25%2Fbabel6%E5%8D%87%E7%BA%A7%E5%88%B07-x%E8%B8%A9%E5%9D%91%2F</url>
+    <content type="text"><![CDATA[babel官网babel-loader]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[cookie篇]]></title>
     <url>%2F2019%2F11%2F21%2Fcookie%E7%AF%87%2F</url>
     <content type="text"><![CDATA[什么是cookie? 第一次访问服务器的时候，会在响应头里面看到Set-Cookie信息（只有在首次访问服务器的时候才会在响应头中出现该信息）,如：Set-Cookie:JSESSIONID=joadjosd 浏览器会根据响应头的set-cookie信息设置浏览器的cookie并保存到浏览器本地 当再次请求的时候（非首次请求），浏览器会在请求头里将cookie发送给服务器(每次请求都是这样)，如：将上面保存的 JSESSIONID=joadjosd 发给服务器 什么是JSESSIONID？ 当用户访问服务器的时候，服务器会为每一个用户开启一个session,浏览器是怎么判断这个session到底是属于哪个用户呢？JSESSIONID的作用就体现出来了：JSESSIONID就是用来判断当前用户对应于哪个session，换句话说JSESSIONID会告诉服务器该浏览器的session保存在服务器内存的什么地方。 服务器首先检查这个浏览器的请求里是否已包含了一个session标识————称为session id，如果已包含则说明以前已经为此浏览器创建过session，服务器就按照session id把这个session检索出来使用（检索不到，会新建一个）；如果浏览器请求不包含session id，则为此浏览器创建一个session并且生成一个与此session相关联的session id，session id的值应该是一个既不会重复，又不容易被找到规律以仿造的字符串，这个session id将被在本次响应中返回给浏览器保存。 保存这个session id的方式可以采用cookie，这样浏览器在下次请求中，会把包含这个session id的cookie发送给服务器。 一般这个cookie的名字都是类似于SESSIONID，JSESSIONID只是tomcat的对session id的叫法，其实就是session id，在其它的容器也许就不叫JSESSIONID了。 创建cookie123function setCookie(name,value,cookieDomain) &#123; document.cookie = name + '='+ encodeURIComponent(value) + ';domain=' + cookieDomain + ';path=/';&#125; 删除cookie1234567// 删除 cookie 非常简单。您只需要设置 expires 参数为以前的时间即可function delCookie(name) &#123; var exp = new Date(); exp.setTime(exp.getTime() - 1); var cookie = getCookie(name); cookie &amp;&amp; (document.cookie = name + '=' + cookie + ';expires=' + exp.toGMTString()); &#125; cookie属性 属性项 属性项介绍 NAME=VALUE 键值对，可以设置要保存的 Key/Value，注意这里的 NAME 不能和其他属性项的名字一样 Expires 过期时间，在设置的某个时间点后该 Cookie 就会失效 Domain 生成该 Cookie 的域名，如 domain=”www.baidu.com&quot; Path 该 Cookie 是在当前的哪个路径下生成的，如 path=/wp-admin/ Secure 如果设置了这个属性，那么只会在 SSH 连接时才会回传该 Cookie 参考：1.JSESSIONID的简单说明2.cookie、session、sessionid 与jsessionid3.深入理解Cookie4.javascript cookie]]></content>
