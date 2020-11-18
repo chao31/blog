@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[npm和npx的区别]]></title>
+    <url>%2F2020%2F11%2F18%2Fnpm%E5%92%8Cnpx%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 npxnpx是执行Node软件包的工具，它从 npm5.2版本开始，就与npm捆绑在一起。如果不能用，手动安装1npm install -g npx npm与npx执行命令对比： 12345678910111213// 免去了设置路径npx eslint --init// 若使用npm./node_modules/bin/eslint --init// 或者在package.json设置好scripts脚本 //&#123;// "scripts": &#123;// "eslint":"eslint --init"// &#125;//&#125; npm run eslint npx 的原理很简单，就是运行的时候，会到node_modules/.bin路径和环境变量$PATH里面，检查命令是否存在 默认情况下，首先检查路径中是否存在要执行的包（即在项目中）； 如果存在，它将执行； 若不存在，意味着尚未安装该软件包，npx将安装其最新版本，然后执行它； 只执行，不安装(若未安装，会报错)1npx some-package --no-install]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[glob.sync]]></title>
+    <url>%2F2020%2F11%2F10%2Fglob-sync%2F</url>
+    <content type="text"><![CDATA[异步匹配和同步匹配1234// 异步匹配glob(pattern, [options], cb)// 同步匹配glob.sync(pattern, [options])]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[vue文档纪要]]></title>
+    <url>%2F2020%2F10%2F20%2Fvue%E6%96%87%E6%A1%A3%E7%BA%AA%E8%A6%81%2F</url>
+    <content type="text"><![CDATA[计算属性和侦听器计算属性计算属性的setter计算属性默认只有 getter，不过在需要时你也可以提供一个 setter：1234567891011121314computed: &#123; fullName: &#123; // getter get: function () &#123; return this.firstName + ' ' + this.lastName &#125;, // setter set: function (newValue) &#123; var names = newValue.split(' ') this.firstName = names[0] this.lastName = names[names.length - 1] &#125; &#125;&#125; 现在再运行 vm.fullName = &#39;John Doe&#39; 时，setter 会被调用，vm.firstName 和 vm.lastName 也会相应地被更新 列表渲染用v-for把一个数组对应为一组元素1234567891011this.items = [ &#123; message: 'Foo' &#125;, &#123; message: 'Bar' &#125;];&lt;li v-for="(item, index) in items"&gt; &#123;&#123; index &#125;&#125; - &#123;&#123; item.message &#125;&#125;&lt;/li&gt;// 渲染结果：// 0 - Foo,// 1 - Bar 在v-for里使用对象12345678910111213this.object = &#123; title: 'How to do lists in Vue', author: 'Jane Doe', publishedAt: '2016-04-10'&#125;&lt;div v-for="(value, name, index) in object"&gt; &#123;&#123; index &#125;&#125;. &#123;&#123; name &#125;&#125;: &#123;&#123; value &#125;&#125;&lt;/div&gt;// 渲染结果// 1.title: 'How to do lists in Vue',// 2.author: 'Jane Doe',// 3.publishedAt: '2016-04-10' 深入了解组件组件注册组件名大小写我们强烈推荐遵循 W3C 规范中的自定义组件名 (字母全小写且必须包含一个连字符)1Vue.component('my-component-name', &#123; /* ... */ &#125;) 自定义事件事件名不同于组件和 prop，事件名不存在任何自动化的大小写转换。而是触发的事件名需要完全匹配监听这个事件所用的名称。举个例子，如果触发一个 camelCase 名字的事件：123456// 没有效果 &lt;my-component v-on:my-event="doSomething"&gt;&lt;/my-component&gt;this.$emit('myEvent');&lt;blog-post post-title="hello!"&gt;&lt;/blog-post&gt;props: ['postTitle'], 内在深入响应式原理检测变化的注意事项对于对象响应式与非响应式：12345678910var vm = new Vue(&#123; data:&#123; a:1 &#125;&#125;)// `vm.a` 是响应式的vm.b = 2// `vm.b` 是非响应式的 给对象添加单个新属性：用$set1this.$set(this.someObject,'b',2) 给对象添加多个新属性：直接Object.assign()不会触发响应，需要原对象与要混合进去的对象的 property 一起创建一个新的对象12// 代替 `Object.assign(this.someObject, &#123; a: 1, b: 2 &#125;)`this.someObject = Object.assign(&#123;&#125;, this.someObject, &#123; a: 1, b: 2 &#125;) 对于数组Vue 不能检测以下数组的变动：1.当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue2.当你修改数组的长度时，例如：vm.items.length = newLength 但$set和数组的splice、shift等方法可以触发：12Vue.set(vm.items, indexOfItem, newValue);vm.items.splice(indexOfItem, 1, newValue); 异步更新队列nextTick：将回调延迟到下次 DOM 更新循环之后执行，下面是理解nextTick的很好的例子：1234567891011var vm = new Vue(&#123; el: '#example', data: &#123; message: '123' &#125;&#125;)vm.message = 'new message' // 更改数据vm.$el.textContent === 'new message' // false,因为dom未更新Vue.nextTick(function () &#123; vm.$el.textContent === 'new message' // true，因为dom已更新&#125;)]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[算法好文章]]></title>
     <url>%2F2020%2F10%2F12%2F%E7%AE%97%E6%B3%95%E5%A5%BD%E6%96%87%E7%AB%A0%2F</url>
     <content type="text"><![CDATA[1.JavaScript 数据结构与算法之美 - 十大经典排序算法汇总2.前端动画演绎排序算法3.JavaScript 数据结构与算法之美 - 时间和空间复杂度]]></content>
