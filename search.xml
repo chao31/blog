@@ -4,6 +4,9 @@
     <title><![CDATA[npm和npx的区别]]></title>
     <url>%2F2020%2F11%2F18%2Fnpm%E5%92%8Cnpx%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
     <content type="text"><![CDATA[npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 npxnpx是执行Node软件包的工具，它从 npm5.2版本开始，就与npm捆绑在一起。如果不能用，手动安装1npm install -g npx npm与npx执行命令对比： 12345678910111213// 免去了设置路径npx eslint --init// 若使用npm./node_modules/bin/eslint --init// 或者在package.json设置好scripts脚本 //&#123;// "scripts": &#123;// "eslint":"eslint --init"// &#125;//&#125; npm run eslint npx 的原理很简单，就是运行的时候，会到node_modules/.bin路径和环境变量$PATH里面，检查命令是否存在 默认情况下，首先检查路径中是否存在要执行的包（即在项目中）； 如果存在，它将执行； 若不存在，意味着尚未安装该软件包，npx将安装其最新版本，然后执行它； 只执行，不安装(若未安装，会报错)1npx some-package --no-install]]></content>
+      <tags>
+        <tag>node</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[glob.sync]]></title>
