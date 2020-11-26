@@ -386,8 +386,9 @@
       
         
           
-          回退到上一个版本上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~1001git reset --hard HEAD^
-回退到某个版本详细请看123git reset abcsdgit reset --hard abcsdgi
+          git push –set-upstream新建一个分支NAME后，直接执行git push到远程，是push不上去的
+要么就是暴力推上去git push origin NAME,
+若用下面这个建立远程关联，以后就能用git push了1git push --set-upstream origin 
           ...
           <!--noindex-->
           <div class="post-button text-center">
