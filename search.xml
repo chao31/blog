@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[git rebase和git merge的区别]]></title>
+    <url>%2F2020%2F11%2F28%2Fgit%2Frebase%E5%92%8Cmerge%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[master分支有两个commit：C1 -&gt; C2 基于master切一个dev分支进行开发 dev分支在今天下午生成了3个commit，分别在：C3(2点)-&gt; C4(3点) -&gt; C5(6点) 在今天下午，其它开发者在master分支上合入了自己的分支，C6(4点) -&gt; C7(5点)，所以远程的master就变成了C1 -&gt; C2 -&gt; C6(4点) -&gt; C7(5点)如下图：]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[你想知道的BFC]]></title>
     <url>%2F2020%2F11%2F25%2F%E4%BD%A0%E6%83%B3%E7%9F%A5%E9%81%93%E7%9A%84BFC%2F</url>
     <content type="text"></content>
@@ -126,6 +137,17 @@
     <title><![CDATA[git常用技巧]]></title>
     <url>%2F2017%2F05%2F12%2Fgit%2Fgit%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7%2F</url>
     <content type="text"><![CDATA[git push –set-upstream新建一个分支NAME后，直接执行git push到远程，是push不上去的 要么就是暴力推上去git push origin NAME, 若用下面这个建立远程关联，以后就能用git push了1git push --set-upstream origin NAME git push12// 提交本地test分支 作为 远程的master分支git push origin test:master git rebase12345678// 相当于是从远程获取最新版本到本地，不会自动mergegit fetch// 把b分支合并到当前分支git rebase b // 如：将远程的origin/master，合到本地分支git rebase origin/master 提mr时，合master有冲突1234567891011git checkout -b &lt;分支名&gt; origin/&lt;分支名&gt;git checkout mastergit pull --rebase=truegit checkout &lt;分支名&gt;# 合并mastergit merge master --no-ff# 解决冲突后，git add -Agit commit -m &lt;合并信息&gt;git push origin &lt;分支名&gt;:&lt;分支名&gt; 文件回退到指定版本12345// 会把文件变成绿色 + 红色git reset xxxx file// 对红色进行checkout恢复，就只剩绿色了，但文件已经变回指定版本了git checkout file// 若想让绿色变成红色，继续reset操作 回退到某个版本详细请看123git reset abcsdgit reset --hard abcsdgit reset --soft abcsd git reflog 回退到某个操作1234// 通过reflog找到操作的commitgit reflog// 回到那个commitgit reset 回退到上一个版本上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~1001git reset --hard HEAD^ git diff123456// 查看当前修改了啥git diff// 和某个commit做diffgit diff 276bb8f// 和某个文件做diffgit diff index.html 查看分支合并图1git log --graph 基于某个分支创建新分支12345678// 基于当前分支创建新分支devgit checkout -b dev// 基于远程分支，创建新分支git checkout -b &lt;分支名&gt; origin/&lt;分支名&gt;// 如：本地没有 develop-test，基于远程创建一个develop-testgit checkout -b develop-test origin/develop-test 分支查看本地分支：git branch 查看远程分支：git branch -a 创建分支：git branch &lt;name&gt; 切换分支：git checkout &lt;name&gt; 创建+切换分支：git checkout -b &lt;name&gt; 合并某分支到当前分支：git merge &lt;name&gt; 删除分支：git branch -d &lt;name&gt; git stash查看工作现场：git stash list 恢复现场但不删除stash：git stash apply 删除stash：git stash drop 恢复现场并删除stash：git stash pop]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[如何搭建git服务器]]></title>
+    <url>%2F2017%2F03%2F13%2Fgit%2F%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAgit%E6%9C%8D%E5%8A%A1%E5%99%A8%2F</url>
+    <content type="text"><![CDATA[安装git1apt-get install git 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git目录 在git用户下创建.ssh 目录1234cd /home/gitmkdir .sshcd .sshvi authorized_keys 将本地~/.ssh 里的id_rsa.pub中的内容添加到服务器端的authorized_keys 初始化一个git仓库在opt下建一个git目录，以后git的仓库都放在这个目录12345cd /optmkdir gitchown -R git:git git //修改git目录的拥有者chmod 777 gitcd git // chown将指定文件的拥有者改为指定的用户或组chown -R 用户名:组名 文件 初始化一个project仓库，一般以.git结尾进行命名123mkdir project.git cd project.gitgit --bare init 本地进行代码推送1234567# 在 本地 的电脑上cd myprojectgit initgit add .git commit -m 'initial commit'git remote add origin git@gitserver:/opt/git/project.gitgit push origin master 若因权限问题推送失败，则可能是文件夹所有者问题12# 修改服务器project.git仓库的所有者chown -R git:git project.git]]></content>
       <categories>
         <category>git</category>
       </categories>
