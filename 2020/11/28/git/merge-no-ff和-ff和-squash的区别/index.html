@@ -79,24 +79,29 @@
 
 
 
-<meta name="description" content="git merge123我们平常什么都不加的时候，则使用默认的 --ff ， 即 fast-forward 方式fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit git merge –no-ff1指的是强行关闭fast-forward方式,保留分支">
+<meta name="description" content="一张图来告诉你–no-ff和–ff git merge 我们平常什么都不加的时候，则使用默认的 –ff ， 即 fast-forward 方式   fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit  git merge –no-ff1指的是强行关闭">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="merge--no-ff和--ff和--squash的区别">
 <meta property="og:url" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="git merge123我们平常什么都不加的时候，则使用默认的 --ff ， 即 fast-forward 方式fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit git merge –no-ff1指的是强行关闭fast-forward方式,保留分支">
+<meta property="og:description" content="一张图来告诉你–no-ff和–ff git merge 我们平常什么都不加的时候，则使用默认的 –ff ， 即 fast-forward 方式   fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit  git merge –no-ff1指的是强行关闭">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b6.png">
+<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b1.gif">
+<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b2.gif">
+<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b3.gif">
+<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b4.gif">
+<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b5.png">
 <meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/a1.png">
 <meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/a2.png">
 <meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/a3.png">
 <meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/a4.png">
-<meta property="og:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b1.gif">
-<meta property="og:updated_time" content="2020-11-28T10:09:44.755Z">
+<meta property="og:updated_time" content="2020-11-28T10:20:25.623Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="merge--no-ff和--ff和--squash的区别">
-<meta name="twitter:description" content="git merge123我们平常什么都不加的时候，则使用默认的 --ff ， 即 fast-forward 方式fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit git merge –no-ff1指的是强行关闭fast-forward方式,保留分支">
-<meta name="twitter:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/a1.png">
+<meta name="twitter:description" content="一张图来告诉你–no-ff和–ff git merge 我们平常什么都不加的时候，则使用默认的 –ff ， 即 fast-forward 方式   fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit  git merge –no-ff1指的是强行关闭">
+<meta name="twitter:image" content="http://yoursite.com/2020/11/28/git/merge-no-ff和-ff和-squash的区别/b6.png">
 
 
 
@@ -392,12 +397,23 @@
       
 
       
-        <h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我们平常什么都不加的时候，则使用默认的 --ff ， 即 fast-forward 方式</span><br><span class="line"></span><br><span class="line">fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit</span><br></pre></td></tr></table></figure>
+        <h3 id="一张图来告诉你–no-ff和–ff"><a href="#一张图来告诉你–no-ff和–ff" class="headerlink" title="一张图来告诉你–no-ff和–ff"></a>一张图来告诉你–no-ff和–ff</h3><p><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b6.png" alt=""></p>
+<h3 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h3><blockquote>
+<p>我们平常什么都不加的时候，则使用默认的 –ff ， 即 fast-forward 方式</p>
+</blockquote>
+<blockquote>
+<p>fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit</p>
+</blockquote>
 <h3 id="git-merge-–no-ff"><a href="#git-merge-–no-ff" class="headerlink" title="git merge –no-ff"></a>git merge –no-ff</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">指的是强行关闭fast-forward方式,保留分支的commit历史</span><br></pre></td></tr></table></figure>
-<h3 id="git-merge-–squash"><a href="#git-merge-–squash" class="headerlink" title="git merge –squash"></a>git merge –squash</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">是用来把一些不必要commit进行压缩，比如说，你的feature在开发的时候写的commit很乱，那么我们合并的时候不希望把这些历史commit带过来，于是使用</span><br></pre></td></tr></table></figure>
-<p>如：<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a1.png" alt=""><br>在master分支上，执行<code>git merge hotfix</code></p>
-<p>然后看到了Fast-forward 的字样，hotfix通过–ff的方式合进了master，如下：<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a2.png" alt=""><br>仅仅是master指针指向了这个提交C4。这样是一种比较快的合并方式，轻量级，简单。<br>这个时候，我们往往会删掉hotfix分支，因为它的历史作用已经结束，这个时候，我们的iss53这个功能又向前开发，进行了一次提交，到了C5，那么变成了这样：<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a3.png" alt=""><br>然后，我们要把iss53 这个分支合并回master，因为有分叉，两个版本的内容要进行合并,是不能用Fast-forward（只有在没有需要合并内容的时候，会有这个fast-forward 方式的提交） ，这时用的就是–no-ff的效果，并生成了一个新的commit号<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a4.png" alt=""><br>如果我们对第一次合并，使用了–no-ff参数，那么也会产生这样的结果，生成一个新的提交，实际上等于是对C4 进行一次复制，创建一个新的commit，这就是–no-ff的作用。</p>
-<p><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b1.gif" alt=""></p>
+<h3 id="git-merge-–squash"><a href="#git-merge-–squash" class="headerlink" title="git merge –squash"></a>git merge –squash</h3><blockquote>
+<p>是用来把一些不必要commit进行压缩，比如说，你的feature在开发的时候写的commit很乱，那么我们合并的时候不希望把这些历史commit带过来，于是使用</p>
+</blockquote>
+<h3 id="动图来告诉几种合并的区别"><a href="#动图来告诉几种合并的区别" class="headerlink" title="动图来告诉几种合并的区别"></a>动图来告诉几种合并的区别</h3><p><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b1.gif" alt=""><br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b2.gif" alt=""><br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b3.gif" alt=""><br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b4.gif" alt=""><br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./b5.png" alt=""></p>
+<h3 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h3><p><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a1.png" alt=""></p>
+<blockquote>
+<p>在master分支上，执行<code>git merge hotfix</code><br>然后看到了Fast-forward 的字样，hotfix通过–ff的方式合进了master，如下：<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a2.png" alt=""><br>仅仅是master指针指向了这个提交C4。这样是一种比较快的合并方式，轻量级，简单。<br>这个时候，我们往往会删掉hotfix分支，因为它的历史作用已经结束，这个时候，我们的iss53这个功能又向前开发，进行了一次提交，到了C5，那么变成了这样：<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a3.png" alt=""><br>然后，我们要把iss53 这个分支合并回master，因为有分叉，两个版本的内容要进行合并,是不能用Fast-forward（只有在没有需要合并内容的时候，会有这个fast-forward 方式的提交） ，这时用的就是–no-ff的效果，并生成了一个新的commit号<br><img src="/2020/11/28/git/merge-no-ff和-ff和-squash的区别/./a4.png" alt=""><br>如果我们对第一次合并，使用了–no-ff参数，那么也会产生这样的结果，生成一个新的提交，实际上等于是对C4 进行一次复制，创建一个新的commit，这就是–no-ff的作用。</p>
+</blockquote>
+<p>参考:<br><a href="https://www.codenong.com/9069061/" target="_blank" rel="noopener">“git merge”和”git merge–no ff”有什么区别？</a><br><a href="https://blog.csdn.net/chaiyu2002/article/details/81020370" target="_blank" rel="noopener">Git：git-merge的–ff和–no-ff</a></p>
 
       
     </div>
@@ -576,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge"><span class="nav-number">1.</span> <span class="nav-text">git merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge-–no-ff"><span class="nav-number">2.</span> <span class="nav-text">git merge –no-ff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge-–squash"><span class="nav-number">3.</span> <span class="nav-text">git merge –squash</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一张图来告诉你–no-ff和–ff"><span class="nav-number">1.</span> <span class="nav-text">一张图来告诉你–no-ff和–ff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge"><span class="nav-number">2.</span> <span class="nav-text">git merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge-–no-ff"><span class="nav-number">3.</span> <span class="nav-text">git merge –no-ff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-merge-–squash"><span class="nav-number">4.</span> <span class="nav-text">git merge –squash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动图来告诉几种合并的区别"><span class="nav-number">5.</span> <span class="nav-text">动图来告诉几种合并的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举个例子"><span class="nav-number">6.</span> <span class="nav-text">举个例子</span></a></li></ol></div>
             
 
           </div>
