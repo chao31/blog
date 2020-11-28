@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="安装git1apt-get install git 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git目录 在git用户下创建.ssh 目录1234cd /home/gitmkdir .sshcd .sshvi authorized_keys 将本地~/.ssh 里的id_rsa.pub中的内容添加到服务器端的authorized_keys 初">
+<meta name="description" content="ubuntu安装git123456// 安装sudo apt-get install git// git仓库配置git config --global user.name &quot;Your Name&quot;git config --global user.email &quot;email@example.com&quot; 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何搭建git服务器">
 <meta property="og:url" content="http://yoursite.com/2017/03/13/git/如何搭建git服务器/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="安装git1apt-get install git 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git目录 在git用户下创建.ssh 目录1234cd /home/gitmkdir .sshcd .sshvi authorized_keys 将本地~/.ssh 里的id_rsa.pub中的内容添加到服务器端的authorized_keys 初">
+<meta property="og:description" content="ubuntu安装git123456// 安装sudo apt-get install git// git仓库配置git config --global user.name &quot;Your Name&quot;git config --global user.email &quot;email@example.com&quot; 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3770183-1e0b47505c13aea1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2020-11-28T06:13:42.786Z">
+<meta property="og:updated_time" content="2020-11-28T10:52:52.290Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何搭建git服务器">
-<meta name="twitter:description" content="安装git1apt-get install git 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git目录 在git用户下创建.ssh 目录1234cd /home/gitmkdir .sshcd .sshvi authorized_keys 将本地~/.ssh 里的id_rsa.pub中的内容添加到服务器端的authorized_keys 初">
+<meta name="twitter:description" content="ubuntu安装git123456// 安装sudo apt-get install git// git仓库配置git config --global user.name &quot;Your Name&quot;git config --global user.email &quot;email@example.com&quot; 在Ubuntu上创建git用户1sudo adduser git 这样在/home目录下就多了一个git">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/3770183-1e0b47505c13aea1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -184,41 +184,11 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
+            首页
           </a>
         </li>
       
@@ -229,6 +199,16 @@
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -388,7 +368,7 @@
       
 
       
-        <h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install git</span><br></pre></td></tr></table></figure>
+        <h2 id="ubuntu安装git"><a href="#ubuntu安装git" class="headerlink" title="ubuntu安装git"></a>ubuntu安装git</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 安装</span></span><br><span class="line">sudo apt-get install git</span><br><span class="line"></span><br><span class="line"><span class="comment">// git仓库配置</span></span><br><span class="line">git config --global user.name <span class="string">"Your Name"</span></span><br><span class="line">git config --global user.email <span class="string">"email@example.com"</span></span><br></pre></td></tr></table></figure>
 <h2 id="在Ubuntu上创建git用户"><a href="#在Ubuntu上创建git用户" class="headerlink" title="在Ubuntu上创建git用户"></a>在Ubuntu上创建git用户</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser git</span><br></pre></td></tr></table></figure>
 <p>这样在/home目录下就多了一个git目录</p>
 <h2 id="在git用户下创建-ssh-目录"><a href="#在git用户下创建-ssh-目录" class="headerlink" title="在git用户下创建.ssh 目录"></a>在git用户下创建.ssh 目录</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /home/git</span><br><span class="line">mkdir .ssh</span><br><span class="line">cd .ssh</span><br><span class="line">vi authorized_keys</span><br></pre></td></tr></table></figure>
@@ -400,6 +380,17 @@
 <p>初始化一个project仓库，一般以.git结尾进行命名<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir project.git </span><br><span class="line">cd project.git</span><br><span class="line">git --bare init</span><br></pre></td></tr></table></figure></p>
 <h2 id="本地进行代码推送"><a href="#本地进行代码推送" class="headerlink" title="本地进行代码推送"></a>本地进行代码推送</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 在 本地 的电脑上</span><br><span class="line">cd myproject</span><br><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'initial commit'</span></span><br><span class="line">git remote add origin git@gitserver:<span class="regexp">/opt/gi</span>t/project.git</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 <p>若因权限问题推送失败，则可能是文件夹所有者问题<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 修改服务器project.git仓库的所有者</span><br><span class="line">chown -R git:git project.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="node-安装"><a href="#node-安装" class="headerlink" title="node 安装"></a>node 安装</h2><ol>
+<li>去node官网，找到对应版本链接</li>
+<li><code>wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz</code></li>
+<li>mv到对应目录，如/opt/</li>
+<li><p>解压</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf   node-v10<span class="number">.15</span><span class="number">.0</span>-linux-x64.tar.xz</span><br><span class="line">mv node-v10<span class="number">.15</span><span class="number">.0</span>-linux-x64.tar.xz nodejs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确认一下nodejs下bin目录是否有node 和npm文件，如果有则执行软连接，变为全局</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -s /opt/nodejs/bin/npm /usr/local/bin/ </span><br><span class="line">ln -s /opt/nodejs/bin/node /usr/local/bin/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
     </div>
@@ -430,7 +421,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/25/前端基础-位运算/" rel="next" title="前端基础---位运算">
+              <a href="/2016/04/25/前端基础/前端基础-位运算/" rel="next" title="前端基础---位运算">
                 <i class="fa fa-chevron-left"></i> 前端基础---位运算
               </a>
             
@@ -521,9 +512,9 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                <a href="/archives">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -534,7 +525,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -545,7 +536,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -578,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装git"><span class="nav-number">1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Ubuntu上创建git用户"><span class="nav-number">2.</span> <span class="nav-text">在Ubuntu上创建git用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在git用户下创建-ssh-目录"><span class="nav-number">3.</span> <span class="nav-text">在git用户下创建.ssh 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化一个git仓库"><span class="nav-number">4.</span> <span class="nav-text">初始化一个git仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地进行代码推送"><span class="nav-number">5.</span> <span class="nav-text">本地进行代码推送</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ubuntu安装git"><span class="nav-number">1.</span> <span class="nav-text">ubuntu安装git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Ubuntu上创建git用户"><span class="nav-number">2.</span> <span class="nav-text">在Ubuntu上创建git用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在git用户下创建-ssh-目录"><span class="nav-number">3.</span> <span class="nav-text">在git用户下创建.ssh 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化一个git仓库"><span class="nav-number">4.</span> <span class="nav-text">初始化一个git仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地进行代码推送"><span class="nav-number">5.</span> <span class="nav-text">本地进行代码推送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node-安装"><span class="nav-number">6.</span> <span class="nav-text">node 安装</span></a></li></ol></div>
             
 
           </div>
