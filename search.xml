@@ -12,6 +12,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[merge--no-ff和--ff和--squash的区别]]></title>
+    <url>%2F2020%2F11%2F28%2Fgit%2Fmerge-no-ff%E5%92%8C-ff%E5%92%8C-squash%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[git merge123我们平常什么都不加的时候，则使用默认的 --ff ， 即 fast-forward 方式fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit git merge –no-ff1指的是强行关闭fast-forward方式,保留分支的commit历史 git merge –squash1是用来把一些不必要commit进行压缩，比如说，你的feature在开发的时候写的commit很乱，那么我们合并的时候不希望把这些历史commit带过来，于是使用 如：在master分支上，执行git merge hotfix 然后看到了Fast-forward 的字样，hotfix通过–ff的方式合进了master，如下：仅仅是master指针指向了这个提交C4。这样是一种比较快的合并方式，轻量级，简单。这个时候，我们往往会删掉hotfix分支，因为它的历史作用已经结束，这个时候，我们的iss53这个功能又向前开发，进行了一次提交，到了C5，那么变成了这样：然后，我们要把iss53 这个分支合并回master，因为有分叉，两个版本的内容要进行合并,是不能用Fast-forward（只有在没有需要合并内容的时候，会有这个fast-forward 方式的提交） ，这时用的就是–no-ff的效果，并生成了一个新的commit号如果我们对第一次合并，使用了–no-ff参数，那么也会产生这样的结果，生成一个新的提交，实际上等于是对C4 进行一次复制，创建一个新的commit，这就是–no-ff的作用。]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[你想知道的BFC]]></title>
     <url>%2F2020%2F11%2F25%2F%E4%BD%A0%E6%83%B3%E7%9F%A5%E9%81%93%E7%9A%84BFC%2F</url>
     <content type="text"></content>
