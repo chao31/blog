@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/05/07/webpack/webpack使用指南/1.png">
 <meta property="og:image" content="http://yoursite.com/2018/05/07/webpack/webpack使用指南/2.png">
 <meta property="og:image" content="http://yoursite.com/2018/05/07/webpack/webpack使用指南/3.jpg">
-<meta property="og:updated_time" content="2020-11-28T11:27:31.867Z">
+<meta property="og:updated_time" content="2020-12-10T07:26:28.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="webpack使用指南">
 <meta name="twitter:description" content="创建package.json1npm init 在项目的根目录中执行这个命令，它会自动创建 package.json文件，然后终端会问诸如项目名称，项目描述，作者等信息，可默认回车 安装Webpack依赖包1npm install --save-dev webpack 这时package.json里会增加两个属性：description和devDependencies –save-dev 与 –s">
@@ -375,6 +375,7 @@
 <h2 id="安装Webpack依赖包"><a href="#安装Webpack依赖包" class="headerlink" title="安装Webpack依赖包"></a>安装Webpack依赖包</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev webpack</span><br></pre></td></tr></table></figure>
 <p>这时<code>package.json</code>里会增加两个属性：<code>description</code>和<code>devDependencies</code><br><img src="/2018/05/07/webpack/webpack使用指南/./1.png" alt=""></p>
 <h3 id="–save-dev-与-–save的区别"><a href="#–save-dev-与-–save的区别" class="headerlink" title="–save-dev 与 –save的区别"></a>–save-dev 与 –save的区别</h3><ul>
+<li><code>npm install X</code>:<br>会把X包安装到node_modules目录中不会修改package.json,之后运行npm install命令时，不会自动安装X</li>
 <li><code>npm install --save-dev *</code>:使用此命令安装，会将依赖安装到<code>devDependencies</code>目录下，该目录下都是开发时需要的依赖,如<code>npm install --save-dev gulp-uglify</code>，安装了js的压缩包<code>gulp-uglify</code>，而压缩插件只在开发时使用，项目发布后不需要</li>
 <li><code>npm install --save *</code>:会将依赖安装到<code>description</code>目录下，该目录下都是发布后也需要的依赖，如<code>vue</code>这样的框架，项目发布后依然需要</li>
 </ul>
@@ -573,7 +574,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -648,7 +649,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

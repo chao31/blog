@@ -86,12 +86,12 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="数据类型js数据类型分两种：  基本数据类型：Undefined、 Null、 String、 Boolean、 Number、 String 和 Symbol(ES6新增) 复杂数据类型：Object   区别：内存的分配不同  基本数据类型存储在栈中 复杂数据类型存储在堆中，栈中存储的变量，是指向堆中的引用地址   区分数据类型的方法：  typeof：可以确定值是否是基本数据类型 insta">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/6/2/16b1775c9934039d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2020-11-28T10:56:56.679Z">
+<meta property="og:image" content="http://yoursite.com/2017/06/23/前端基础/聊一聊-变量-作用域与内存/a.png">
+<meta property="og:updated_time" content="2020-12-04T06:37:01.837Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊一聊:变量,作用域与内存">
 <meta name="twitter:description" content="数据类型js数据类型分两种：  基本数据类型：Undefined、 Null、 String、 Boolean、 Number、 String 和 Symbol(ES6新增) 复杂数据类型：Object   区别：内存的分配不同  基本数据类型存储在栈中 复杂数据类型存储在堆中，栈中存储的变量，是指向堆中的引用地址   区分数据类型的方法：  typeof：可以确定值是否是基本数据类型 insta">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/6/2/16b1775c9934039d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/23/前端基础/聊一聊-变量-作用域与内存/a.png">
 
 
 
@@ -403,7 +403,7 @@
 </blockquote>
 <p>以一段代码具体说明：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun3</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'fun3'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    fun2();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun1();</span><br></pre></td></tr></table></figure>
-<p><code>Global Execution Context</code> (即全局执行上下文)首先入栈，过程如下：<br><img src="https://user-gold-cdn.xitu.io/2019/6/2/16b1775c9934039d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt=""><br>伪代码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//全局执行上下文首先入栈</span></span><br><span class="line">ECStack.push(globalContext);</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行fun1();</span></span><br><span class="line">ECStack.push(<span class="xml"><span class="tag">&lt;<span class="name">fun1</span>&gt;</span> functionContext);</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">//fun1中又调用了fun2;</span></span><br><span class="line">ECStack.push(&lt;fun2&gt; functionContext);</span><br><span class="line"></span><br><span class="line">//fun2中又调用了fun3;</span><br><span class="line">ECStack.push(&lt;fun3&gt; functionContext);</span><br><span class="line"></span><br><span class="line">//fun3执行完毕</span><br><span class="line">ECStack.pop();</span><br><span class="line"></span><br><span class="line">//fun2执行完毕</span><br><span class="line">ECStack.pop();</span><br><span class="line"></span><br><span class="line">//fun1执行完毕</span><br><span class="line">ECStack.pop();</span><br><span class="line"></span><br><span class="line">//javascript继续顺序执行下面的代码，但ECStack底部始终有一个 全局上下文（globalContext）;</span><br></pre></td></tr></table></figure></p>
+<p><code>Global Execution Context</code> (即全局执行上下文)首先入栈，过程如下：<br><img src="/2017/06/23/前端基础/聊一聊-变量-作用域与内存/./a.png" alt=""><br>伪代码:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//全局执行上下文首先入栈</span></span><br><span class="line">ECStack.push(globalContext);</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行fun1();</span></span><br><span class="line">ECStack.push(<span class="xml"><span class="tag">&lt;<span class="name">fun1</span>&gt;</span> functionContext);</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">//fun1中又调用了fun2;</span></span><br><span class="line">ECStack.push(&lt;fun2&gt; functionContext);</span><br><span class="line"></span><br><span class="line">//fun2中又调用了fun3;</span><br><span class="line">ECStack.push(&lt;fun3&gt; functionContext);</span><br><span class="line"></span><br><span class="line">//fun3执行完毕</span><br><span class="line">ECStack.pop();</span><br><span class="line"></span><br><span class="line">//fun2执行完毕</span><br><span class="line">ECStack.pop();</span><br><span class="line"></span><br><span class="line">//fun1执行完毕</span><br><span class="line">ECStack.pop();</span><br><span class="line"></span><br><span class="line">//javascript继续顺序执行下面的代码，但ECStack底部始终有一个 全局上下文（globalContext）;</span><br></pre></td></tr></table></figure></p>
 <p><a href="https://juejin.cn/post/6844903858645237767#heading-5" target="_blank" rel="noopener">参考</a></p>
 <h3 id="块级作用域的概念"><a href="#块级作用域的概念" class="headerlink" title="块级作用域的概念"></a>块级作用域的概念</h3><blockquote>
 <p>由最近的一对{}界定</p>
@@ -539,7 +539,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +614,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
