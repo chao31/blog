@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 npxnpx是执行Node软件包的工具，它从 npm5.2版本开始，就与npm捆绑在一起。如果不能用，手动安装1npm install -g npx npm与npx执行命令对比： 12345678910111213// 免去了设置路径n">
+<meta name="description" content="npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 –save-dev 与 –save的区别 npm install X:会把X包安装到node_modules目录中不会修改package.json,之后运行npm install命令时，不会自动安装X npm install --sav">
 <meta name="keywords" content="node">
 <meta property="og:type" content="article">
 <meta property="og:title" content="npm和npx的区别">
 <meta property="og:url" content="http://yoursite.com/2019/03/08/node/npm和npx的区别/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 npxnpx是执行Node软件包的工具，它从 npm5.2版本开始，就与npm捆绑在一起。如果不能用，手动安装1npm install -g npx npm与npx执行命令对比： 12345678910111213// 免去了设置路径n">
+<meta property="og:description" content="npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 –save-dev 与 –save的区别 npm install X:会把X包安装到node_modules目录中不会修改package.json,之后运行npm install命令时，不会自动安装X npm install --sav">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-11-28T11:28:33.041Z">
+<meta property="og:updated_time" content="2021-01-09T06:59:00.857Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="npm和npx的区别">
-<meta name="twitter:description" content="npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 npxnpx是执行Node软件包的工具，它从 npm5.2版本开始，就与npm捆绑在一起。如果不能用，手动安装1npm install -g npx npm与npx执行命令对比： 12345678910111213// 免去了设置路径n">
+<meta name="twitter:description" content="npmnpm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理 npm 允许在package.json文件里面，使用scripts字段定义脚本命令 –save-dev 与 –save的区别 npm install X:会把X包安装到node_modules目录中不会修改package.json,之后运行npm install命令时，不会自动安装X npm install --sav">
 
 
 
@@ -368,6 +368,12 @@
       
         <h2 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h2><p>npm是Node.js的软件包管理器，其目标是自动化的依赖性和软件包管理</p>
 <p>npm 允许在package.json文件里面，使用scripts字段定义脚本命令</p>
+<h2 id="–save-dev-与-–save的区别"><a href="#–save-dev-与-–save的区别" class="headerlink" title="–save-dev 与 –save的区别"></a>–save-dev 与 –save的区别</h2><ul>
+<li><code>npm install X</code>:<br>会把X包安装到node_modules目录中不会修改package.json,之后运行npm install命令时，不会自动安装X</li>
+<li><code>npm install --save-dev *</code>:使用此命令安装，会将依赖安装到<code>devDependencies</code>目录下，该目录下都是开发时需要的依赖,如<code>npm install --save-dev gulp-uglify</code>，安装了js的压缩包<code>gulp-uglify</code>，而压缩插件只在开发时使用，项目发布后不需要</li>
+<li><code>npm install --save *</code>:会将依赖安装到<code>description</code>目录下，该目录下都是发布后也需要的依赖，如<code>vue</code>这样的框架，项目发布后依然需要</li>
+</ul>
+<h2 id="简写-S与-D的区别"><a href="#简写-S与-D的区别" class="headerlink" title="简写-S与-D的区别"></a>简写-S与-D的区别</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// -S会安装再dependencies目录下</span></span><br><span class="line">npm i -S xxx</span><br><span class="line"><span class="comment">// -D会安装在devDependencies目录下</span></span><br><span class="line">npm i -D xxx</span><br></pre></td></tr></table></figure>
 <h2 id="npx"><a href="#npx" class="headerlink" title="npx"></a>npx</h2><p>npx是执行Node软件包的工具，它从 npm5.2版本开始，就与npm捆绑在一起。<br>如果不能用，手动安装<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npx</span><br></pre></td></tr></table></figure></p>
 <p>npm与npx执行命令对比：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 免去了设置路径</span></span><br><span class="line">npx eslint --init</span><br><span class="line"></span><br><span class="line"><span class="comment">// 若使用npm</span></span><br><span class="line">./node_modules/bin/eslint --init</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者在package.json设置好scripts脚本 </span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//  "scripts": &#123;</span></span><br><span class="line"><span class="comment">//    "eslint":"eslint --init"</span></span><br><span class="line"><span class="comment">//  &#125;</span></span><br><span class="line"><span class="comment">//&#125; </span></span><br><span class="line">npm run eslint</span><br></pre></td></tr></table></figure>
@@ -556,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#npm"><span class="nav-number">1.</span> <span class="nav-text">npm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npx"><span class="nav-number">2.</span> <span class="nav-text">npx</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#npm"><span class="nav-number">1.</span> <span class="nav-text">npm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#–save-dev-与-–save的区别"><span class="nav-number">2.</span> <span class="nav-text">–save-dev 与 –save的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简写-S与-D的区别"><span class="nav-number">3.</span> <span class="nav-text">简写-S与-D的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npx"><span class="nav-number">4.</span> <span class="nav-text">npx</span></a></li></ol></div>
             
 
           </div>

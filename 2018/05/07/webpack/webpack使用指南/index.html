@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/05/07/webpack/webpack使用指南/1.png">
 <meta property="og:image" content="http://yoursite.com/2018/05/07/webpack/webpack使用指南/2.png">
 <meta property="og:image" content="http://yoursite.com/2018/05/07/webpack/webpack使用指南/3.jpg">
-<meta property="og:updated_time" content="2020-12-10T07:26:28.311Z">
+<meta property="og:updated_time" content="2021-01-09T06:57:23.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="webpack使用指南">
 <meta name="twitter:description" content="创建package.json1npm init 在项目的根目录中执行这个命令，它会自动创建 package.json文件，然后终端会问诸如项目名称，项目描述，作者等信息，可默认回车 安装Webpack依赖包1npm install --save-dev webpack 这时package.json里会增加两个属性：description和devDependencies –save-dev 与 –s">
@@ -374,11 +374,12 @@
 <p>在项目的根目录中执行这个命令，它会自动创建 <code>package.json</code>文件，然后终端会问诸如项目名称，项目描述，作者等信息，可默认回车</p>
 <h2 id="安装Webpack依赖包"><a href="#安装Webpack依赖包" class="headerlink" title="安装Webpack依赖包"></a>安装Webpack依赖包</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev webpack</span><br></pre></td></tr></table></figure>
 <p>这时<code>package.json</code>里会增加两个属性：<code>description</code>和<code>devDependencies</code><br><img src="/2018/05/07/webpack/webpack使用指南/./1.png" alt=""></p>
-<h3 id="–save-dev-与-–save的区别"><a href="#–save-dev-与-–save的区别" class="headerlink" title="–save-dev 与 –save的区别"></a>–save-dev 与 –save的区别</h3><ul>
+<h2 id="–save-dev-与-–save的区别"><a href="#–save-dev-与-–save的区别" class="headerlink" title="–save-dev 与 –save的区别"></a>–save-dev 与 –save的区别</h2><ul>
 <li><code>npm install X</code>:<br>会把X包安装到node_modules目录中不会修改package.json,之后运行npm install命令时，不会自动安装X</li>
 <li><code>npm install --save-dev *</code>:使用此命令安装，会将依赖安装到<code>devDependencies</code>目录下，该目录下都是开发时需要的依赖,如<code>npm install --save-dev gulp-uglify</code>，安装了js的压缩包<code>gulp-uglify</code>，而压缩插件只在开发时使用，项目发布后不需要</li>
 <li><code>npm install --save *</code>:会将依赖安装到<code>description</code>目录下，该目录下都是发布后也需要的依赖，如<code>vue</code>这样的框架，项目发布后依然需要</li>
 </ul>
+<h2 id="S与-D的区别"><a href="#S与-D的区别" class="headerlink" title="-S与-D的区别"></a>-S与-D的区别</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// -S会安装再dependencies目录下</span></span><br><span class="line">npm i -S xxx</span><br><span class="line"><span class="comment">// -D会安装在devDependencies目录下</span></span><br><span class="line">npm i -D xxx</span><br></pre></td></tr></table></figure>
 <h2 id="简单的demo"><a href="#简单的demo" class="headerlink" title="简单的demo"></a>简单的demo</h2><p><img src="/2018/05/07/webpack/webpack使用指南/./2.png" alt=""></p>
 <ol>
 <li><p><code>src/index.js</code></p>
@@ -629,7 +630,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建package-json"><span class="nav-number">1.</span> <span class="nav-text">创建package.json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Webpack依赖包"><span class="nav-number">2.</span> <span class="nav-text">安装Webpack依赖包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#–save-dev-与-–save的区别"><span class="nav-number">2.1.</span> <span class="nav-text">–save-dev 与 –save的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的demo"><span class="nav-number">3.</span> <span class="nav-text">简单的demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Maps"><span class="nav-number">4.</span> <span class="nav-text">Source Maps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用webpack构建本地服务器"><span class="nav-number">5.</span> <span class="nav-text">使用webpack构建本地服务器</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建package-json"><span class="nav-number">1.</span> <span class="nav-text">创建package.json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Webpack依赖包"><span class="nav-number">2.</span> <span class="nav-text">安装Webpack依赖包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#–save-dev-与-–save的区别"><span class="nav-number">3.</span> <span class="nav-text">–save-dev 与 –save的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S与-D的区别"><span class="nav-number">4.</span> <span class="nav-text">-S与-D的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的demo"><span class="nav-number">5.</span> <span class="nav-text">简单的demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Maps"><span class="nav-number">6.</span> <span class="nav-text">Source Maps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用webpack构建本地服务器"><span class="nav-number">7.</span> <span class="nav-text">使用webpack构建本地服务器</span></a></li></ol></div>
             
 
           </div>
