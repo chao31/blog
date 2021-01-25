@@ -12,6 +12,28 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[vue3中双向绑定的实现]]></title>
+    <url>%2F2021%2F01%2F25%2Fvue%2Fvue3%E4%B8%AD%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E7%9A%84%E5%AE%9E%E7%8E%B0%2F</url>
+    <content type="text"><![CDATA[vue3的双向绑定改变，用一句话来描述：vue3的双向绑定原理由Object.defineProperty改为基于ES6的Proxy代理来实现。 为什么要替换Object.defineProperty vue官网在深入响应式原理中解释，由于 JavaScript 的限制，Vue 不能检测数组和对象的变化，也就是： 对象属性的添加和删除，无法监听 数组索引和长度的变更，无法监听 vue2.x为了给每个属性添加setter/getter，会递归调用，而Proxy能劫持整个对象，相比而言更高效 实现在上一篇《vue双向绑定原理》的基础上，重写监听器observe，上一篇observe的实现如下：1234567891011121314151617181920212223function observe ($data, vm) &#123; Object.keys($data).forEach(function (key) &#123; defineReactive(vm, key, $data[key]); &#125;)&#125;function defineReactive (obj, key, val) &#123; var dep = new Dep(); Object.defineProperty(obj, key, &#123; get: function () &#123; // 添加订阅者 watcher 到主题对象 Dep if (Dep.target) dep.addSub(Dep.target); return val &#125;, set: function (newVal) &#123; if (newVal === val) return val = newVal; // 作为发布者发出通知 dep.notify(); &#125; &#125;);&#125; 使用Proxy数据劫持的方式来实现：12345678910111213141516observe(data) &#123; const that = this; let handler = &#123; get(target, property) &#123; return target[property]; &#125;, set(target, key, value) &#123; let res = Reflect.set(target, key, value); that.subscribe[key].map(item =&gt; &#123; item.update(); &#125;); return res; &#125; &#125; this.$data = new Proxy(data, handler);&#125; 这段代码里把代理器返回的对象代理到this.$data，即this.$data是代理后的对象，外部每次对this.$data进行操作时，实际上执行的是这段代码里handler对象上的方法。 参考： vue3中的双向绑定 proxy vue3.0中的双向数据绑定方法]]></content>
+      <categories>
+        <category>vue</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[snabbdom虚拟Dom库]]></title>
+    <url>%2F2021%2F01%2F09%2Fvue%2Fsnabbdom%E8%99%9A%E6%8B%9FDom%E5%BA%93%2F</url>
+    <content type="text"><![CDATA[1234npm initnpm i -S snabbdom// snabbdom的package.json文件使用了exports，这是webpack5的东西，所以要装webpack5npm i -D webpack@5 webpack-cli@3 webpack-dev-server@3 新虚拟dom和老虚拟dom进行diff（精细化比较），算出应该如何最小量更新，最后反映到真实的dom上 dom –&gt; 虚拟dom，属于模板编译范畴 虚拟dom如何被渲染函数（h函数）产生？手写h函数 diff算法原理手写diff算法 虚拟dom如何通过diff变成真正的dom虚拟dom–&gt;真正的dom是涵盖在diff算法里的 h函数用来产生虚拟节点(vnode)h(‘a’, {props: {href:’www.xiaomi.com&#39;}}, ‘文本’) 将得到虚拟节点{ “sel”: “a”, “data”: { “props”: { “href”: “http://www.xiaomi.com&quot; } }, “text”: “文本”} 真正的dom1&lt;a href="www.xiaomi.com"&gt;文本&lt;/a&gt; 虚拟节点的属性：{ children: [], data: {}, elm: undefined, // 对应的真实dom key: undefined, sel: ‘div’, // selector text: ‘我是文本’} 只有是同一个节点，才会进行精细化比较，否则删除旧的，插入新的什么是同一个节点？相同的选择器，相同的key123function sameVnode (vnode1: VNode, vnode2: VNode): boolean &#123; return vnode1.key === vnode2.key &amp;&amp; vnode1.sel === vnode2.sel&#125; 只进行同层比较，不会进行跨层比较，如：给一个子节点加上一个父节点，会认为父节点和以前的子节点是同层但不同，不会利用之前的子节点，而是将其删除后再创建vue的diff并不是“无微不至”，但上面的做法并不影响效率，因为实际代码很少有上面这种操作 旧头 === 新头 旧尾 === 新尾 旧尾 === 新头 旧头 === 新尾 新增的情况:新：ABCDE旧: ABC 删除的情况新：ABDE旧: ABCDE]]></content>
+      <categories>
+        <category>vue</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Vue模板编译器原理]]></title>
     <url>%2F2020%2F12%2F14%2Fnode%2FVue%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%99%A8%E5%8E%9F%E7%90%86%2F</url>
     <content type="text"><![CDATA[参考： Vue模板编译原理 Vue源码学习之模板编译器原理 HTMLParser 的实现和使用]]></content>
@@ -86,6 +108,17 @@
       </categories>
       <tags>
         <tag>前端基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[mustache模板引擎]]></title>
+    <url>%2F2020%2F09%2F24%2Fvue%2Fmustache%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%2F</url>
+    <content type="text"><![CDATA[什么是模板引擎数据变成视图的最优雅的解决方案 mustache基本使用mustache底层核心机理带你手写实现mustache库]]></content>
+      <categories>
+        <category>vue</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
       </tags>
   </entry>
   <entry>
