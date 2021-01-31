@@ -4,7 +4,7 @@
 
   
 
-
+<script>document.location = './archives/'</script>
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
@@ -366,7 +366,9 @@
       
         
           
-          vue3的双向绑定改
+          vue3的双向绑定改变，用一句话来描述：vue3的双向绑定原理由Object.defineProperty改为基于ES6的Proxy代理来实现。
+为什么要替换Object.defineProperty
+vue官网在深入响应式原理中解释，由于 JavaScript 的限制，Vue 不能检测数组和对象的
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -514,7 +516,7 @@
       
         
           
-          本文的双向绑定是简版
+          本文的双向绑定是简版的vue实现方式，不包含虚拟dom的实现等原理图：实现：我们要实现的是将如下代码，最终渲染成dom节点1234&lt;div id="app"&gt;  &lt;input type="text" v-model="text"&gt;  &#123;&#123; text &#1
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -662,7 +664,7 @@
       
         
           
-          扫描器扫描器，主要作
+          扫描器扫描器，主要作用是扫描到之后的数据，以及它们之间的数据，保存到token里，便于以后拼装12345678910111213141516171819202122232425262728293031323334// 扫描器class Scanner &#123;   constructor(tem
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -810,7 +812,12 @@
       
         
           
-          什么是模板引擎数据变
+          什么是模板引擎数据变成视图的最优雅的解决方案,vue的模板引擎也借鉴于此
+历史上曾经出现的数据变为视图的方法
+纯DOM法：非常笨拙，没有实战价值
+
+数组join法: 曾几何时非常流行，是曾经的前端必会知识
+123456789101112for (var i=0,len = arr.length;i&
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -958,7 +965,8 @@
       
         
           
-          1234npm in
+          1234npm initnpm i -S snabbdom// snabbdom的package.json文件使用了exports，这是webpack5的东西，所以要装webpack5npm i -D webpack@5 webpack-cli@3 webpack-dev-server@3
+新虚拟d
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1106,7 +1114,7 @@
       
         
           
-          代码注释123456
+          代码注释12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1254,7 +1262,8 @@
       
         
           
-          initPace.s
+          initPace.sourcesPace.sources = [ ]push进去4个实例：’ajax’, ‘elements’, ‘document’, ‘eventLag’
+AjaxMonitorRequestIntercept封装发送ajax请求的XMLHttpRequest，XDomainRe
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1402,7 +1411,8 @@
       
         
           
-          Pace.js是什么
+          Pace.js是什么？Pace能自动监控页面的加载进度，生成进度条。它能够自动监控ajax请求、事件循环延迟、document就绪状态和页面上的元素，并当再次发送ajax请求，也能够重启进度条。官网
+特点1.配置简单1234&lt;head&gt;  &lt;script src="/pace/pa
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1550,7 +1560,7 @@
       
         
           
-          题目1.123456
+          题目1.123456789const promise = new Promise((resolve, reject) =&gt; &#123;  console.log(1)  resolve()  console.log(2)&#125;)promise.then(() =&gt; &#123; 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1698,7 +1708,7 @@
       
         
           
-          1234567891
+          123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798
           ...
           <!--noindex-->
           <div class="post-button text-center">
