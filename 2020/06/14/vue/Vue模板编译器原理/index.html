@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="参考：  Vue模板编译原理  Vue源码学习之模板编译器原理  HTMLParser 的实现和使用">
+<meta name="description" content="模板渲染流程 通过正则把模板转换成 AST 抽象语法树 优化器优化，标记所有的静态节点后，交由代码生成器生成渲染代码， 通过渲染函数构建器将渲染代码构建成一个渲染函数， 调用渲染函数，我们就可以得到目标模板的虚拟dom  AST抽象树的结构AST的每个节点的结构如下：123456789&amp;#123;  tag: tagName, // 标签名  type: 1, // 元素类型  children:">
 <meta name="keywords" content="vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue模板编译器原理">
 <meta property="og:url" content="http://yoursite.com/2020/06/14/vue/Vue模板编译器原理/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="参考：  Vue模板编译原理  Vue源码学习之模板编译器原理  HTMLParser 的实现和使用">
+<meta property="og:description" content="模板渲染流程 通过正则把模板转换成 AST 抽象语法树 优化器优化，标记所有的静态节点后，交由代码生成器生成渲染代码， 通过渲染函数构建器将渲染代码构建成一个渲染函数， 调用渲染函数，我们就可以得到目标模板的虚拟dom  AST抽象树的结构AST的每个节点的结构如下：123456789&amp;#123;  tag: tagName, // 标签名  type: 1, // 元素类型  children:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-01-29T12:35:15.773Z">
+<meta property="og:updated_time" content="2021-01-31T12:31:22.754Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue模板编译器原理">
-<meta name="twitter:description" content="参考：  Vue模板编译原理  Vue源码学习之模板编译器原理  HTMLParser 的实现和使用">
+<meta name="twitter:description" content="模板渲染流程 通过正则把模板转换成 AST 抽象语法树 优化器优化，标记所有的静态节点后，交由代码生成器生成渲染代码， 通过渲染函数构建器将渲染代码构建成一个渲染函数， 调用渲染函数，我们就可以得到目标模板的虚拟dom  AST抽象树的结构AST的每个节点的结构如下：123456789&amp;#123;  tag: tagName, // 标签名  type: 1, // 元素类型  children:">
 
 
 
@@ -366,13 +366,56 @@
       
 
       
-        <p>参考：</p>
+        <h2 id="模板渲染流程"><a href="#模板渲染流程" class="headerlink" title="模板渲染流程"></a>模板渲染流程</h2><ol>
+<li>通过正则把模板转换成 AST 抽象语法树</li>
+<li>优化器优化，标记所有的静态节点后，交由<code>代码生成器</code>生成渲染代码，</li>
+<li>通过<code>渲染函数构建器</code>将渲染代码构建成一个<code>渲染函数</code>，</li>
+<li>调用<code>渲染函数</code>，我们就可以得到目标模板的虚拟dom</li>
+</ol>
+<h2 id="AST抽象树的结构"><a href="#AST抽象树的结构" class="headerlink" title="AST抽象树的结构"></a>AST抽象树的结构</h2><p>AST的每个节点的结构如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  tag: tagName, <span class="comment">// 标签名</span></span><br><span class="line">  type: <span class="number">1</span>, <span class="comment">// 元素类型</span></span><br><span class="line">  children: [], <span class="comment">// 孩子列表</span></span><br><span class="line">  attrs, <span class="comment">// 属性集合</span></span><br><span class="line">  parent: <span class="literal">null</span>, <span class="comment">// 父元素</span></span><br><span class="line">  text: <span class="literal">null</span> <span class="comment">// 文本节点内容</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>节点类型有：元素类型、文本类型、注释类型…</p>
+<h2 id="生成AST抽象语法树"><a href="#生成AST抽象语法树" class="headerlink" title="生成AST抽象语法树"></a>生成AST抽象语法树</h2><p>模板引擎解析html字符串，每匹配到下面一种类型，就触发对应的钩子函数</p>
+<ul>
+<li>是否是开始标签，如：<div ...=""> ；</div></li>
+<li>是否是结束标签，如： ;</li>
+<li>是否是一段文本，如：<div>这是一段代码</div>中的文字；</li>
+<li>是否是一个注释，如：<!--这是一个注释--></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">parseHTML(html, &#123;</span><br><span class="line">    start(tag, attrs, isUnary, startIndex, endIndex) &#123;</span><br><span class="line">        <span class="comment">// 收集整理信息</span></span><br><span class="line">    &#125;,</span><br><span class="line">    end(tag, startIndex, endIndex) &#123;</span><br><span class="line">        <span class="comment">// 收集整理信息</span></span><br><span class="line">    &#125;,</span><br><span class="line">    chars(text, startIndex, endIndex) &#123;</span><br><span class="line">        <span class="comment">// 收集整理信息</span></span><br><span class="line">    &#125;,</span><br><span class="line">    comment(text, startIndex, endIndex) &#123;</span><br><span class="line">        <span class="comment">// 收集整理信息</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码可以看到，我们将模板字符串是否存在作为while的终止条件，我们每匹配到 一种情况，就会将相应的文本从html中删除掉，这样不断循环下去，就会不断的触发响应的钩子函数收集数据，直至html变成空字符串退出循环，此时，我们已经将整个文本都解析完了。</p>
+<h2 id="钩子函数start"><a href="#钩子函数start" class="headerlink" title="钩子函数start"></a>钩子函数start</h2><ul>
+<li>根据传过来的标签名创建抽象语法树元素节点</li>
+<li>检查一些非法属性或标签，并对一些特殊情况做预处理</li>
+<li>解析attrs</li>
+<li>解析指令v-if，v-for，v-once等</li>
+<li>如果不是自闭标签的话，将当前元素加入到栈中，用于维护元素间的父子关系</li>
+</ul>
+<h2 id="钩子函数end"><a href="#钩子函数end" class="headerlink" title="钩子函数end"></a>钩子函数end</h2><ul>
+<li>将栈顶元素弹出（因为当前标签已经结束后了，栈顶存的就是当前标签）</li>
+<li>重新更正父级标签（因为当前标签已经结束，说明他的子节点也都解析完了，父标签不在是当前标签了，父级标签有重新变回当前标签的父级标签）</li>
+<li>关闭标签，此时对if条件分支进行一些补充以及进行一些收尾工作等</li>
+</ul>
+<h2 id="钩子函数chars"><a href="#钩子函数chars" class="headerlink" title="钩子函数chars"></a>钩子函数chars</h2><ul>
+<li>创建抽象语法树文本节点</li>
+<li>将这个文本节点加入到父节点的children中</li>
+</ul>
+<h2 id="钩子函数comment"><a href="#钩子函数comment" class="headerlink" title="钩子函数comment"></a>钩子函数comment</h2><ul>
+<li>创建抽象语法树注释节点</li>
+<li>只要注释节点存在父级，就把注释节点加入到父级节点的children中</li>
+</ul>
+<p>举个例子:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>这是一段文字<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>选项1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>选项2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>当我们解析到<code>&lt;div&gt;</code>时，将div加入到栈中，此时栈中只有div一个元素，然后继续解析，解析到<code>&lt;p&gt;</code>s的时候，我们再把p也加入到栈中，此时栈中有div和p两个元素，栈顶的元素是p。再往下解析，解析到一段文字，触发chars收集并生成抽象语法树文本节点，那么，此时，这个文本节点的父级是什么呢？显而易见，就是我们栈顶的元素p。所以我们将这个文本节点加入到p的children中即可。继续解析，发现<code>&lt;/p&gt;</code>结束标签，我们将栈顶元素p弹出来，也就是说，现在我们的栈里又只有一个div了，同理，下面的ul和li也是这样操作。当最后解析到<code>&lt;/div&gt;</code>时，栈里也就只有一个div元素了，将栈顶的div弹出，栈空了，已经解析完了。流程如下：</p>
+</blockquote>
+<p>参考：</p>
 <ol>
 <li><p><a href="https://juejin.cn/post/6863241580753616903#heading-0" target="_blank" rel="noopener">Vue模板编译原理</a></p>
 </li>
 <li><p><a href="https://blog.csdn.net/u010651383/article/details/104372265" target="_blank" rel="noopener">Vue源码学习之模板编译器原理</a></p>
 </li>
 <li><p><a href="https://www.jianshu.com/p/cd8dedf489c1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="noopener">HTMLParser 的实现和使用</a></p>
+</li>
+<li><p><a href="https://juejin.cn/post/6859182302979686414#heading-8" target="_blank" rel="noopener">模板引擎实现原理（Vue篇）</a></p>
 </li>
 </ol>
 
@@ -469,8 +512,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -534,6 +586,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板渲染流程"><span class="nav-number">1.</span> <span class="nav-text">模板渲染流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AST抽象树的结构"><span class="nav-number">2.</span> <span class="nav-text">AST抽象树的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成AST抽象语法树"><span class="nav-number">3.</span> <span class="nav-text">生成AST抽象语法树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#钩子函数start"><span class="nav-number">4.</span> <span class="nav-text">钩子函数start</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#钩子函数end"><span class="nav-number">5.</span> <span class="nav-text">钩子函数end</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#钩子函数chars"><span class="nav-number">6.</span> <span class="nav-text">钩子函数chars</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#钩子函数comment"><span class="nav-number">7.</span> <span class="nav-text">钩子函数comment</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
