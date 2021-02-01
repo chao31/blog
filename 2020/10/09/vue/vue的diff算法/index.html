@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="1234npm initnpm i -S snabbdom// snabbdom的package.json文件使用了exports，这是webpack5的东西，所以要装webpack5npm i -D webpack@5 webpack-cli@3 webpack-dev-server@3 新虚拟dom和老虚拟dom进行diff（精细化比较），算出应该如何最小量更新，最后反映到真实的dom上 do">
+<meta name="description" content="什么是diff算法要知道渲染真实DOM的开销是很大的，比如有时候我们修改了某个数据，如果直接渲染到真实dom上会引起整个dom树的重绘和重排，有没有可能我们只更新我们修改的那一小块dom而不要更新整个dom呢？diff算法能够帮助我们。 我们先根据真实DOM生成一颗virtual DOM，当virtual DOM某个节点的数据改变后会生成一个新的Vnode，然后Vnode和oldVnode作对比，">
 <meta name="keywords" content="vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue的diff算法（待整理）">
 <meta property="og:url" content="http://yoursite.com/2020/10/09/vue/vue的diff算法/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1234npm initnpm i -S snabbdom// snabbdom的package.json文件使用了exports，这是webpack5的东西，所以要装webpack5npm i -D webpack@5 webpack-cli@3 webpack-dev-server@3 新虚拟dom和老虚拟dom进行diff（精细化比较），算出应该如何最小量更新，最后反映到真实的dom上 do">
+<meta property="og:description" content="什么是diff算法要知道渲染真实DOM的开销是很大的，比如有时候我们修改了某个数据，如果直接渲染到真实dom上会引起整个dom树的重绘和重排，有没有可能我们只更新我们修改的那一小块dom而不要更新整个dom呢？diff算法能够帮助我们。 我们先根据真实DOM生成一颗virtual DOM，当virtual DOM某个节点的数据改变后会生成一个新的Vnode，然后Vnode和oldVnode作对比，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-01-29T12:33:36.459Z">
+<meta property="og:image" content="http://yoursite.com/2020/10/09/vue/vue的diff算法/01.png">
+<meta property="og:updated_time" content="2021-02-01T13:02:41.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue的diff算法（待整理）">
-<meta name="twitter:description" content="1234npm initnpm i -S snabbdom// snabbdom的package.json文件使用了exports，这是webpack5的东西，所以要装webpack5npm i -D webpack@5 webpack-cli@3 webpack-dev-server@3 新虚拟dom和老虚拟dom进行diff（精细化比较），算出应该如何最小量更新，最后反映到真实的dom上 do">
+<meta name="twitter:description" content="什么是diff算法要知道渲染真实DOM的开销是很大的，比如有时候我们修改了某个数据，如果直接渲染到真实dom上会引起整个dom树的重绘和重排，有没有可能我们只更新我们修改的那一小块dom而不要更新整个dom呢？diff算法能够帮助我们。 我们先根据真实DOM生成一颗virtual DOM，当virtual DOM某个节点的数据改变后会生成一个新的Vnode，然后Vnode和oldVnode作对比，">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/09/vue/vue的diff算法/01.png">
 
 
 
@@ -366,31 +368,58 @@
       
 
       
-        <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br><span class="line">npm i -S snabbdom</span><br><span class="line"><span class="comment">// snabbdom的package.json文件使用了exports，这是webpack5的东西，所以要装webpack5</span></span><br><span class="line">npm i -D webpack@<span class="number">5</span> webpack-cli@<span class="number">3</span> webpack-dev-server@<span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>新虚拟dom和老虚拟dom进行diff（精细化比较），算出应该如何最小量更新，最后反映到真实的dom上</p>
-<p>dom –&gt; 虚拟dom，属于模板编译范畴</p>
+        <h2 id="什么是diff算法"><a href="#什么是diff算法" class="headerlink" title="什么是diff算法"></a>什么是diff算法</h2><p>要知道渲染真实DOM的开销是很大的，比如有时候我们修改了某个数据，如果直接渲染到真实dom上会引起整个dom树的重绘和重排，有没有可能我们只更新我们修改的那一小块dom而不要更新整个dom呢？diff算法能够帮助我们。</p>
+<p>我们先根据真实DOM生成一颗virtual DOM，当virtual DOM某个节点的数据改变后会生成一个新的Vnode，然后Vnode和oldVnode作对比，发现有不一样的地方就直接修改在真实的DOM上，然后使oldVnode的值为Vnode。</p>
+<p>diff的过程就是调用名为patch的函数，比较新旧节点，一边比较一边给真实的DOM打补丁。</p>
+<h2 id="virtual-DOM"><a href="#virtual-DOM" class="headerlink" title="virtual DOM"></a>virtual DOM</h2><p>虚拟dom的节点属性如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  sel: <span class="string">'div'</span>, <span class="comment">// 选择器，是什么标签</span></span><br><span class="line">  key: <span class="string">'A'</span>, <span class="comment">// key</span></span><br><span class="line">  children: [], <span class="comment">// 子元素</span></span><br><span class="line">  text: <span class="string">'文本'</span>, <span class="comment">// 文本节点</span></span><br><span class="line">  elem: el <span class="comment">// 关联真实dom</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="diff的主要流程"><a href="#diff的主要流程" class="headerlink" title="diff的主要流程"></a>diff的主要流程</h2><p><img src="/2020/10/09/vue/vue的diff算法/./01.png" alt=""></p>
+<h2 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h2><p>来看看patch是怎么打补丁的（代码只保留核心部分）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span> (<span class="params">oldVnode, vnode</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sameVnode(oldVnode, vnode)) &#123;</span><br><span class="line">      <span class="comment">// 相同节点（值得比较）</span></span><br><span class="line">        patchVnode(oldVnode, vnode)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 不同节点（暴力删除，替换新的，不复用）</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> oEl = oldVnode.el <span class="comment">// 当前oldVnode对应的真实元素节点</span></span><br><span class="line">        <span class="keyword">let</span> parentEle = api.parentNode(oEl)  <span class="comment">// 父元素</span></span><br><span class="line">        createEle(vnode)  <span class="comment">// 根据Vnode生成新元素</span></span><br><span class="line">        <span class="keyword">if</span> (parentEle !== <span class="literal">null</span>) &#123;</span><br><span class="line">            api.insertBefore(parentEle, vnode.el, api.nextSibling(oEl)) <span class="comment">// 将新元素添加进父元素</span></span><br><span class="line">            api.removeChild(parentEle, oldVnode.el)  <span class="comment">// 移除以前的旧元素节点</span></span><br><span class="line">            oldVnode = <span class="literal">null</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// some code </span></span><br><span class="line">    <span class="keyword">return</span> vnode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>patch函数接收两个参数oldVnode和Vnode分别代表新的节点和之前的旧节点</p>
+<p>判断两节点是否值得比较，值得比较则执行patchVnode</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameVnode</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    a.key === b.key &amp;&amp;  <span class="comment">// key值</span></span><br><span class="line">    a.tag === b.tag &amp;&amp;  <span class="comment">// 标签名</span></span><br><span class="line">    a.isComment === b.isComment &amp;&amp;  <span class="comment">// 是否为注释节点</span></span><br><span class="line">    <span class="comment">// 是否都定义了data，data包含一些具体信息，例如onclick , style</span></span><br><span class="line">    isDef(a.data) === isDef(b.data) &amp;&amp;  </span><br><span class="line">    sameInputType(a, b) <span class="comment">// 当标签是&lt;input&gt;的时候，type必须相同</span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不值得比较则用Vnode替换oldVnode<br>如果两个节点都是一样的，那么就深入检查他们的子节点。如果两个节点不一样那就说明Vnode完全被改变了，就可以直接替换oldVnode。</p>
+<p>虽然这两个节点不一样但是他们的子节点一样怎么办？别忘了，diff可是逐层比较的，如果第一层不一样那么就不会继续深入比较第二层了。（我在想这算是一个缺点吗？相同子节点不能重复利用了…）</p>
+<h2 id="patchVnode"><a href="#patchVnode" class="headerlink" title="patchVnode"></a>patchVnode</h2><p>当我们确定两个节点值得比较之后我们会对两个节点指定patchVnode方法。那么这个方法做了什么呢？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">patchVnode (oldVnode, vnode) &#123;</span><br><span class="line">    <span class="keyword">const</span> el = vnode.el = oldVnode.el</span><br><span class="line">    <span class="keyword">let</span> i, oldCh = oldVnode.children, ch = vnode.children</span><br><span class="line">    <span class="keyword">if</span> (oldVnode === vnode) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> (oldVnode.text !== <span class="literal">null</span> &amp;&amp; vnode.text !== <span class="literal">null</span> &amp;&amp; oldVnode.text !== vnode.text) &#123;</span><br><span class="line">        api.setTextContent(el, vnode.text)</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        updateEle(el, vnode, oldVnode)</span><br><span class="line">        <span class="keyword">if</span> (oldCh &amp;&amp; ch &amp;&amp; oldCh !== ch) &#123;</span><br><span class="line">            updateChildren(el, oldCh, ch)</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (ch)&#123;</span><br><span class="line">            createEle(vnode) <span class="comment">//create el's children dom</span></span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (oldCh)&#123;</span><br><span class="line">            api.removeChildren(el)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个函数做了以下事情：</p>
+<ul>
+<li>找到对应的真实dom，称为el</li>
+<li>判断Vnode和oldVnode是否指向同一个对象，如果是，那么直接return</li>
+<li>如果他们都有文本节点并且不相等，那么将el的文本节点设置为Vnode的文本节点。</li>
+<li>如果oldVnode有子节点而Vnode没有，则删除el的子节点</li>
+<li>如果oldVnode没有子节点而Vnode有，则将Vnode的子节点真实化之后添加到el</li>
+<li>如果两者都有子节点，则执行updateChildren函数比较子节点，这一步很重要</li>
+<li>其他几个点都很好理解，我们详细来讲一下updateChildren</li>
+</ul>
+<h2 id="updateChildren"><a href="#updateChildren" class="headerlink" title="updateChildren"></a>updateChildren</h2><p>updateChildren是diff算法的精髓<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">updateChildren (parentElm, oldCh, newCh) &#123;</span><br><span class="line">    <span class="keyword">let</span> oldStartIdx = <span class="number">0</span>, newStartIdx = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> oldEndIdx = oldCh.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> oldStartVnode = oldCh[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> oldEndVnode = oldCh[oldEndIdx]</span><br><span class="line">    <span class="keyword">let</span> newEndIdx = newCh.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> newStartVnode = newCh[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> newEndVnode = newCh[newEndIdx]</span><br><span class="line">    <span class="keyword">let</span> oldKeyToIdx</span><br><span class="line">    <span class="keyword">let</span> idxInOld</span><br><span class="line">    <span class="keyword">let</span> elmToMove</span><br><span class="line">    <span class="keyword">let</span> before</span><br><span class="line">    <span class="keyword">while</span> (oldStartIdx &lt;= oldEndIdx &amp;&amp; newStartIdx &lt;= newEndIdx) &#123;</span><br><span class="line">        <span class="keyword">if</span> (oldStartVnode == <span class="literal">null</span>) &#123;   <span class="comment">// 对于vnode.key的比较，会把oldVnode = null</span></span><br><span class="line">            oldStartVnode = oldCh[++oldStartIdx] </span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (oldEndVnode == <span class="literal">null</span>) &#123;</span><br><span class="line">            oldEndVnode = oldCh[--oldEndIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (newStartVnode == <span class="literal">null</span>) &#123;</span><br><span class="line">            newStartVnode = newCh[++newStartIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (newEndVnode == <span class="literal">null</span>) &#123;</span><br><span class="line">            newEndVnode = newCh[--newEndIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldStartVnode, newStartVnode)) &#123;</span><br><span class="line">            patchVnode(oldStartVnode, newStartVnode)</span><br><span class="line">            oldStartVnode = oldCh[++oldStartIdx]</span><br><span class="line">            newStartVnode = newCh[++newStartIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldEndVnode, newEndVnode)) &#123;</span><br><span class="line">            patchVnode(oldEndVnode, newEndVnode)</span><br><span class="line">            oldEndVnode = oldCh[--oldEndIdx]</span><br><span class="line">            newEndVnode = newCh[--newEndIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldStartVnode, newEndVnode)) &#123;</span><br><span class="line">            patchVnode(oldStartVnode, newEndVnode)</span><br><span class="line">            api.insertBefore(parentElm, oldStartVnode.el, api.nextSibling(oldEndVnode.el))</span><br><span class="line">            oldStartVnode = oldCh[++oldStartIdx]</span><br><span class="line">            newEndVnode = newCh[--newEndIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldEndVnode, newStartVnode)) &#123;</span><br><span class="line">            patchVnode(oldEndVnode, newStartVnode)</span><br><span class="line">            api.insertBefore(parentElm, oldEndVnode.el, oldStartVnode.el)</span><br><span class="line">            oldEndVnode = oldCh[--oldEndIdx]</span><br><span class="line">            newStartVnode = newCh[++newStartIdx]</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="comment">// 使用key时的比较</span></span><br><span class="line">            <span class="keyword">if</span> (oldKeyToIdx === <span class="literal">undefined</span>) &#123;</span><br><span class="line">                oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx) <span class="comment">// 有key生成index表</span></span><br><span class="line">            &#125;</span><br><span class="line">            idxInOld = oldKeyToIdx[newStartVnode.key]</span><br><span class="line">            <span class="keyword">if</span> (!idxInOld) &#123;</span><br><span class="line">                api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)</span><br><span class="line">                newStartVnode = newCh[++newStartIdx]</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                elmToMove = oldCh[idxInOld]</span><br><span class="line">                <span class="keyword">if</span> (elmToMove.sel !== newStartVnode.sel) &#123;</span><br><span class="line">                    api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                    patchVnode(elmToMove, newStartVnode)</span><br><span class="line">                    oldCh[idxInOld] = <span class="literal">null</span></span><br><span class="line">                    api.insertBefore(parentElm, elmToMove.el, oldStartVnode.el)</span><br><span class="line">                &#125;</span><br><span class="line">                newStartVnode = newCh[++newStartIdx]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (oldStartIdx &gt; oldEndIdx) &#123;</span><br><span class="line">        before = newCh[newEndIdx + <span class="number">1</span>] == <span class="literal">null</span> ? <span class="literal">null</span> : newCh[newEndIdx + <span class="number">1</span>].el</span><br><span class="line">        addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (newStartIdx &gt; newEndIdx) &#123;</span><br><span class="line">        removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>主要做了这5个事：<br>1、旧头 == 新头</p>
+<p>2、旧尾 == 新尾</p>
+<p>3、旧头 == 新尾</p>
+<p>4、旧尾 == 新头</p>
+<p>5、单个查找</p>
+<p>举个例子来说明一下：<br>真实: [A, B, C, D, E]<br>旧：  [A, B, C, D, E]<br>新:   [A, F, C, G, E]</p>
+<p>下面用下表1，代表指针在的位置</p>
 <ol>
-<li><p>虚拟dom如何被渲染函数（h函数）产生？<br>手写h函数</p>
-</li>
-<li><p>diff算法原理<br>手写diff算法</p>
-</li>
-<li><p>虚拟dom如何通过diff变成真正的dom<br>虚拟dom–&gt;真正的dom是涵盖在diff算法里的</p>
-</li>
+<li>真实: [A, B, C, D, E]<br>旧：  [A1, B, C, D, E1]<br>新:   [A1, F, C, G, E1]</li>
 </ol>
-<p>h函数用来产生虚拟节点(vnode)<br>h(‘a’, {props: {href:’<a href="http://www.xiaomi.com&#39;}}" target="_blank" rel="noopener">www.xiaomi.com&#39;}}</a>, ‘文本’)</p>
-<p>将得到虚拟节点<br>{<br>  “sel”: “a”,<br>  “data”: {<br>    “props”: {<br>      “href”: “<a href="http://www.xiaomi.com&quot;" target="_blank" rel="noopener">http://www.xiaomi.com&quot;</a><br>    }<br>  },<br>  “text”: “文本”<br>}</p>
-<p>真正的dom<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"www.xiaomi.com"</span>&gt;</span>文本<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>虚拟节点的属性：<br>{<br>  children: [],<br>  data: {},<br>  elm: undefined, // 对应的真实dom<br>  key: undefined,<br>  sel: ‘div’, // selector<br>  text: ‘我是文本’<br>}</p>
-<p>只有是同一个节点，才会进行精细化比较，否则删除旧的，插入新的<br>什么是同一个节点？相同的选择器，相同的key<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameVnode</span> (<span class="params">vnode1: VNode, vnode2: VNode</span>): <span class="title">boolean</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> vnode1.key === vnode2.key &amp;&amp; vnode1.sel === vnode2.sel</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>只进行同层比较，不会进行跨层比较，如：给一个子节点加上一个父节点，会认为父节点和以前的子节点是同层但不同，不会利用之前的子节点，而是将其删除后再创建<br>vue的diff并不是“无微不至”，但上面的做法并不影响效率，因为实际代码很少有上面这种操作</p>
-<ol>
-<li>旧头 === 新头</li>
-<li>旧尾 === 新尾</li>
-<li>旧尾 === 新头</li>
-<li>旧头 === 新尾</li>
+<p>比较前4步，若头部指针匹配，则头部的指针往后移动；若尾部的指针匹配，则往前移动<br>A1 == A1，头指针往后移动，再开始新一轮的5步比较；E1==E1，尾指针往后迁，如下2：</p>
+<p>2.<br>真实: [A, B, C, D, E]<br>旧：  [A, B1, C, D1, E]<br>新:   [A, F1, C, G1, E]</p>
+<p>F1前4步都不匹配，就循环，发现没有，则新建F，插入已处理的节点后，也就是A后，并标记F`,这一步直接在dom上操作，如下3：</p>
+<p>3.<br>真实: [A, F（新）, B, C, D, E]<br>旧：  [A, B1, C, D1, E]<br>新:   [A, F`, C1, G1, E]</p>
+<p>新节点C的前4步都不匹配，则循环，在旧节点找到了C，则将C移动到已处理的节点后，即F(新)后</p>
+<ol start="4">
+<li>真实: [A, F（新）, C（移动）, B, C, D, E]<br>旧：  [A, B1, C, D1, E]<br>新:   [A, F<code>, C</code>, G11, E]</li>
 </ol>
-<p>新增的情况:<br>新：ABCDE<br>旧: ABC</p>
-<p>删除的情况<br>新：ABDE<br>旧: ABCDE</p>
+<p>G匹配5步都没有，则新建</p>
+<ol start="5">
+<li>真实: [A, F（新）, C（移动）, G（新建）, B, C, D, E]<br>旧：  [A, B1, C, D1, E]<br>新:   [A, F<code>, C</code>, G1, E1]</li>
+</ol>
+<p>G操作后，再往后移，此时，前指针移动到了后指针之后了，匹配结束，将旧节点两个之间的节点删除</p>
+<p>6.<br>真实: [A, F（新）, C（移动）, G（新建）, B删, C<code>删, D删, E]
+旧：  [A, B1, C, D1, E]
+新:   [A, F</code>, C`, G1, E1]</p>
+<p>=》 真实：[A, F, C, G, E]</p>
+<h2 id="重点："><a href="#重点：" class="headerlink" title="重点："></a>重点：</h2><p>diff的比较方式<br>进行同层比较，不会进行跨层比较，如：给一个子节点加上一个父节点，会认为父节点和以前的子节点是同层但不同，不会利用之前的子节点，而是将其删除后再创建<br>vue的diff并不是“无微不至”，但上面的做法并不影响效率，因为实际代码很少有上面这种操作</p>
+<p>在采取diff算法比较新旧节点的时候，比较只会在同层级进行, 不会跨层级比较，这样将时间复杂度为 O(n3),Vue进行了优化·O(n3) <em>复杂度</em>的问题转换成 O(n) <em>复杂度</em>的问题(只比较同级不考虑跨级问题)，因为你很少会跨越层级地移动Dom元素。 所以 Virtual Dom只会对同一个层级的元素进行对比</p>
 
       
     </div>
@@ -485,8 +514,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -550,6 +588,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是diff算法"><span class="nav-number">1.</span> <span class="nav-text">什么是diff算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#virtual-DOM"><span class="nav-number">2.</span> <span class="nav-text">virtual DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff的主要流程"><span class="nav-number">3.</span> <span class="nav-text">diff的主要流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patch"><span class="nav-number">4.</span> <span class="nav-text">patch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patchVnode"><span class="nav-number">5.</span> <span class="nav-text">patchVnode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#updateChildren"><span class="nav-number">6.</span> <span class="nav-text">updateChildren</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重点："><span class="nav-number">7.</span> <span class="nav-text">重点：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
