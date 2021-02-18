@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/29/源码解析/quicklink原理解析2/04.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/29/源码解析/quicklink原理解析2/05.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/29/源码解析/quicklink原理解析2/06.png">
-<meta property="og:updated_time" content="2021-01-29T12:43:22.391Z">
+<meta property="og:updated_time" content="2021-02-02T05:44:59.310Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="quicklink原理解析(二)">
 <meta name="twitter:description" content="preload和prefetch的区别 preload 是告诉浏览器页面必定需要的资源，浏览器一定会加载这些资源，prefetch 是告诉浏览器页面可能需要的资源，浏览器不一定会加载这些资源 Prefetch加载优先级非常低，也就是说该方式的作用是加速下一个页面的加载速度 Preload 的与众不同还体现在 onload 事件上。也就是说可以定义资源加载完毕后的回调函数  preload 和 pr">
@@ -378,7 +378,7 @@
 <li>Prefetch加载优先级非常低，也就是说该方式的作用是加速下一个页面的加载速度</li>
 <li>Preload 的与众不同还体现在 onload 事件上。也就是说可以定义资源加载完毕后的回调函数 <link rel="preload" href="..." as="..." onload="preloadFinished()"></li>
 <li>preload 和 prefetch 混用的话，并不会复用资源，而是会重复加载，使用 preload 和 prefetch 的逻辑可能不是写到一起，但一旦发生对用一资源 preload 或 prefetch 的话，会带来双倍的网络请求</li>
-<li><link rel="preload"> 大约有 50% 的支持度，<link rel="prefetch"> 大约有 70% 的支持度。</li>
+<li><code>&lt;link rel=&quot;preload&quot;&gt;</code> 大约有 50% 的支持度，<code>&lt;link rel=&quot;prefetch&quot;&gt;</code> 大约有 70% 的支持度。</li>
 </ol>
 <h2 id="as资源类型"><a href="#as资源类型" class="headerlink" title="as资源类型"></a>as资源类型</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"prefetch"</span> <span class="attr">href</span>=<span class="string">"/my.little.script.js"</span> <span class="attr">as</span>=<span class="string">"script"</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>as：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">audio</span>&gt;</span>、 <span class="tag">&lt;<span class="name">video</span>&gt;</span>、 <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="xml">、 <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">stylesheet</span>&gt;</span>、 <span class="tag">&lt;<span class="name">img</span>&gt;</span>、 SVG、 XHR, fetch、 <span class="tag">&lt;<span class="name">iframe</span>&gt;</span>、	HTML</span></span><br></pre></td></tr></table></figure></p>
